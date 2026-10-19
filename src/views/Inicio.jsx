@@ -1,50 +1,16 @@
-import { useState } from "react";
-import { VscRocket, VscBook, VscDeviceCamera } from "react-icons/vsc";
+import { VscRocket, VscBook } from "react-icons/vsc";
 import { FaGithub } from "react-icons/fa";
 import { me, projects } from "../data/portfolio";
 import { useTyped, Count } from "../components/hooks";
+
 const k = (t) => <span className="k">{t}</span>,
   s = (t) => <span className="s">{t}</span>,
   f = (t) => <span className="f">{t}</span>,
   v = (t) => <span className="v">{t}</span>;
+
 export default function Inicio({ go }) {
   const role = useTyped(me.roles);
-  const [src, setSrc] = useState(() => {
-    try {
-      return localStorage.getItem("foto") || "/foto.jpg";
-    } catch {
-      return "/foto.jpg";
-    }
-  });
-  const [ok, setOk] = useState(true);
-  const pick = (e) => {
-    const fl = e.target.files[0];
-    if (!fl) return;
-    const im = new Image();
-    im.onload = () => {
-      const m = Math.min(im.width, im.height),
-        c = document.createElement("canvas");
-      c.width = c.height = Math.min(480, m);
-      c.getContext("2d").drawImage(
-        im,
-        (im.width - m) / 2,
-        (im.height - m) / 2,
-        m,
-        m,
-        0,
-        0,
-        c.width,
-        c.height,
-      );
-      const d = c.toDataURL("image/jpeg", 0.88);
-      try {
-        localStorage.setItem("foto", d);
-      } catch {}
-      setSrc(d);
-      setOk(true);
-    };
-    im.src = URL.createObjectURL(fl);
-  };
+
   const L = [
     <>
       {k("const")} {v("dev")} = {"{"}
@@ -60,6 +26,7 @@ export default function Inicio({ go }) {
     </>,
     <>{"}"}</>,
   ];
+
   return (
     <section className="view hero">
       <div>
@@ -110,17 +77,11 @@ export default function Inicio({ go }) {
         </div>
       </div>
       <div className="side">
-        <label className="avatar" title="Clic para subir tu foto">
-          {ok ? (
-            <img src={src} alt={me.short} onError={() => setOk(false)} />
-          ) : (
-            <span>
-              <VscDeviceCamera />
-              <small>Subir foto</small>
-            </span>
-          )}
-          <input type="file" accept="image/*" hidden onChange={pick} />
-        </label>
+        {/* La foto ahora es fija y se lee desde la carpeta public */}
+        <div className="avatar">
+          <img src="/copia.png" alt={me.short} />
+        </div>
+
         <small className="cm">Renzo Hinojosa</small>
         <div className="code">
           {L.map((l, i) => (
